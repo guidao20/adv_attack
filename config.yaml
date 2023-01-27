@@ -1,0 +1,122 @@
+VIM:
+  epsilon: 16
+  niters: 10
+  batch_size: 4
+  target_attack: False
+  save_dir: test
+  model_name: inceptionv4
+  std_norm: 0.5
+  mu: 1.0
+  N: 20
+  beta: 1.5
+
+
+SIM:
+  epsilon: 16
+  niters: 10
+  batch_size: 4
+  target_attack: False
+  save_dir: test
+  model_name: inceptionresv2
+  std_norm: 0.5
+  mu: 1.0
+  m: 5
+
+TAIGO:
+  epsilon: 16
+  niters: 10
+  batch_size: 4
+  target_attack: False
+  save_dir: test
+  model_name: inceptionv4
+  std_norm: 0.5
+  mu: 1.0
+  gamma: 1.0
+  steps: 30
+
+TAIGO_R:
+  epsilon: 16
+  niters: 10
+  batch_size: 4
+  target_attack: False
+  save_dir: test
+  model_name: inceptionv4
+  std_norm: 0.5
+  mu: 1.0
+  gamma: 1.0
+  steps: 30
+
+
+AOA:
+  epsilon: 16
+  niters: 10
+  batch_size: 4
+  target_attack: False
+  save_dir: test
+  model_name: resnet152
+  std_norm: 0.5
+  eta: 10
+  lambda_: 1000
+
+NAAO:
+  epsilon: 16
+  niters: 10
+  batch_size: 8
+  target_attack: False
+  save_dir: test
+  model_name: inceptionresv2
+  std_norm: 0.5
+  target_layer: repeat
+  path_type: r
+  gamma: 1.0
+  steps: 25
+  mu: 1.0
+
+
+BLURIGO:
+  epsilon: 16
+  niters: 10
+  batch_size: 1
+  target_attack: False
+  save_dir: test
+  model_name: resnet152
+  std_norm: 0.225
+  mu: 1.0
+  gamma: 1.0
+  steps: 5
+  sigma_max: 1.0
+  grad_step: 0.005
+  
+NRDM:
+  epsilon: 16
+  niters: 10
+  batch_size: 16
+  target_attack: False
+  save_dir: test
+  model_name: resnet152
+  std_norm: 0.225
+  target_layer: layer2
+
+FDA:
+  epsilon: 16
+  niters: 10
+  batch_size: 16
+  target_attack: False
+  save_dir: test
+  model_name: resnet152
+  std_norm: 0.225
+  target_layer: ['layer2']
+  mu: 1.0
+
+FIA:
+  epsilon: 16
+  niters: 10
+  batch_size: 4
+  target_attack: False
+  save_dir: test
+  model_name: resnet152
+  std_norm: 0.225
+  target_layer: layer2
+  pro: 0.7 
+  mu: 1.0
+  steps: 30

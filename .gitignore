@@ -1,0 +1,13 @@
+/result_inceptionresv2/*.npy
+/result_inceptionv3/*.npy
+/result_inceptionv4/*.npy
+/result_resnet152/*.npy
+/test/*.npy
+/data/imagenet/ILSVRC2012_img_val/*.JPEG
+!result_inceptionresv2/labels.npy
+!result_inceptionv3/labels.npy
+!result_inceptionv4/labels.npy
+!result_resnet152/labels.npy
+!test/labels.npy
+!data/imagenet/ILSVRC2012_img_val/ILSVRC2012_val_00033334.JPEG
+
