@@ -16,9 +16,9 @@ for i in range(num - 1):
         image_list.append(batch_image[j])
 
 image = np.array(image_list)
-np.save(os.path.join('result_inceptionresv2','SIM1.npy'),image)
+np.save(os.path.join('result_resnet152','DIM.npy'),image)
 
-path = os.path.join('result_inceptionresv2','SIM1.npy')
+path = os.path.join('result_resnet152','DIM.npy')
 
 input_ = np.load(path)
 print(input_.shape)

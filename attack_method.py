@@ -14,6 +14,7 @@ import ssl
 import torch.nn.functional as F
 import datetime
 import cv2
+from torchvision.transforms import Compose, CenterCrop, ToTensor, Resize
 ssl._create_default_https_context = ssl._create_unverified_context
 
 
@@ -533,4 +534,56 @@ class FIA(object):
             x_adv = x_adv.detach()
         return x_adv   
 
+
+class DIM(object):
+    def __init__(self, epsilon, T_niters, mu, p_value, device,  bound):
+        self.epsilon = epsilon
+        self.T_niters = T_niters
+        self.mu = mu 
+        self.p_value = p_value
+        self.device = device  		
+        self.bound = bound
+
+    def input_diversity(self, input_tensor, low_bound, high_bound, prob):
+        image_shape = input_tensor.shape[3]
+        rnd = torch.randint(low_bound, high_bound, ())
+        rescaled = F.interpolate(input_tensor, size = [rnd, rnd], mode = 'bilinear', align_corners=True)
+        h_rem = high_bound - rnd
+        w_rem = high_bound - rnd
+        pad_top = torch.randint(0, h_rem, ())
+        pad_bottom = h_rem - pad_top
+        pad_left = torch.randint(0, w_rem, ())
+        pad_right = w_rem - pad_left
+        pad_list = (pad_left, pad_right, pad_top, pad_bottom)
+        padded = nn.ConstantPad2d((pad_left, pad_right, pad_top, pad_bottom), 0.)(rescaled)
+        padded = nn.functional.interpolate(padded, [image_shape, image_shape])
+        return padded if torch.rand(()) < prob else input_tensor
+
+
+    def attack(self, model, ori_img, label):
+
+        loss_fn = nn.CrossEntropyLoss()
+
+        g_t = torch.zeros_like(ori_img)
+
+        x_adv = ori_img.clone().detach()
+
+        alpha = self.epsilon / self.T_niters
+
+        for t in range(self.T_niters):
+            x_adv.requires_grad_(True)
+            x_div = self.input_diversity(x_adv, 299, 330, self.p_value)
+            predict = model(x_div)
+            loss = loss_fn(predict, label)
+            loss.backward()
+            grad = x_adv.grad
+            g_t = self.mu * g_t + grad / torch.norm(grad, p=1, dim = [1,2,3], keepdim = True)
+            x_adv = x_adv + alpha * torch.sign(g_t)
+            x_adv = torch.where(x_adv > ori_img + self.epsilon, ori_img + self.epsilon, x_adv)
+            x_adv = torch.where(x_adv < ori_img - self.epsilon, ori_img - self.epsilon, x_adv)
+            x_adv[:,0,:,:]= torch.clamp(x_adv[:,0,:,:], self.bound[0], self.bound[1])
+            x_adv[:,1,:,:]= torch.clamp(x_adv[:,1,:,:], self.bound[2], self.bound[3])
+            x_adv[:,2,:,:]= torch.clamp(x_adv[:,2,:,:], self.bound[4], self.bound[5])
+            x_adv = x_adv.detach()
+        return x_adv
 

@@ -138,9 +138,9 @@ correct_inceptionv3 = 0
 correct_inceptionv4 = 0
 correct_inception_res = 0
 
-advpath = 'SIM1.npy'
-imagepath = os.path.join('result_inceptionresv2', advpath)
-labelpath = os.path.join('result_inceptionresv2', 'labels.npy')
+advpath = 'DIM.npy'
+imagepath = os.path.join('result_resnet152', advpath)
+labelpath = os.path.join('result_resnet152', 'labels.npy')
 
 advdataset1 = AdvImagenet(imagepath = imagepath, labelpath = labelpath, transform = trans_inc)
 adv_loader1 = torch.utils.data.DataLoader(advdataset1, batch_size=batch_size, shuffle=False, num_workers = 0, pin_memory = False)

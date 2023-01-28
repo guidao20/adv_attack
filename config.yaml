@@ -120,3 +120,15 @@ FIA:
   pro: 0.7 
   mu: 1.0
   steps: 30
+
+DIM:
+  epsilon: 16
+  niters: 10
+  batch_size: 4
+  target_attack: False
+  save_dir: test
+  model_name: inceptionv3
+  std_norm: 0.5
+  mu: 1.0
+  p_value: 0.5
+

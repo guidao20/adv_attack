@@ -88,6 +88,10 @@ def get_config_info(attack_name):
         mu = cfg[attack_name]['mu']
         steps = cfg[attack_name]['steps']
         attack_type = FIA(epsilon, steps, niters, mu, pro, target_layer, device, bound)
+    elif attack_name == 'DIM':
+        p_value = cfg[attack_name]['p_value']
+        mu = cfg[attack_name]['mu']
+        attack_type = DIM(epsilon, niters, mu, p_value, device, bound)
     return attack_type, model_name, target_attack, batch_size, save_dir
 
 
